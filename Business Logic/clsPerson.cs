@@ -29,6 +29,7 @@ namespace Business_Logic
         public string Phone { get; set; }
         public string Email { get; set; }
         public int NationalCountryID { get; set; }
+        public clsCountry CountryInfo {  get; set; }
         public string ImagePath { get; set; }
         private string _OldImagePath { get; set; }
 
@@ -69,6 +70,7 @@ namespace Business_Logic
             this.Phone = Phone;
             this.Email = Email;
             this.NationalCountryID = NationalCountryID;
+            CountryInfo = clsCountry.Find(this.NationalCountryID);
             this.ImagePath = ImagePath;
             _Mode = enMode.Update;
 

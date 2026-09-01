@@ -61,7 +61,7 @@ namespace DVLD
                 dgvPeople.Columns["DateOfBirth"].HeaderText = "Date Of Birth";
                 // dgvPeople.Columns["DateOfBirth"].Width = 140;
 
-                dgvPeople.Columns["NationalCountryID"].HeaderText = "Nationality";
+                dgvPeople.Columns["CountryName"].HeaderText = "Nationality";
                 // dgvPeople.Columns["NationalCountryID"].Width = 120;
 
                 dgvPeople.Columns["Phone"].HeaderText = "Phone";
@@ -113,7 +113,7 @@ namespace DVLD
                 case "Last Name":
                     return "LastName";
                 case "Nationality":
-                    return "NationalCountryID";
+                    return "CountryName";
                 case "Gendor":
                     return "GendorName";
                 case "Phone":
@@ -136,7 +136,7 @@ namespace DVLD
                 return;
             }
 
-            if (FilterColumn == "PersonID" || FilterColumn == "NationalCountryID")
+            if (FilterColumn == "PersonID")
             {
                 _DataView.RowFilter = $"[{FilterColumn}] = {tbFilterValue.Text}";
             }
@@ -164,7 +164,7 @@ namespace DVLD
 
         private void tbFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cbFiltersType.Text == "Person ID" || cbFiltersType.Text == "Nationality" || cbFiltersType.Text == "Phone")
+            if (cbFiltersType.Text == "Person ID" || cbFiltersType.Text == "Phone")
             {
                 if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 {

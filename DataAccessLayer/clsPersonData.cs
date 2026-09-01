@@ -260,7 +260,8 @@ namespace DataAccessLayer
             //string query = @"SELECT * FROM People;";
             string query = @"SELECT PersonID, NationalNo, FirstName, SecondName
                             , ThirdName, LastName, DateOfBirth, Gendor, Address
-                            , Phone, Email, NationalCountryID FROM People";
+                            , Phone, Email, Countries.CountryName FROM People INNER JOIN
+                            Countries ON People.NationalCountryID = Countries.CountryID";
             SqlCommand Command = new SqlCommand(query, Connection);
 
             try

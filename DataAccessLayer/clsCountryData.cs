@@ -46,6 +46,42 @@ namespace DataAccessLayer
             return IsFound;
         }
 
+        public static bool GetCountryInfoByCountryName(string CountryName, ref int CountryID)
+        {
+            bool IsFound = false;
+            SqlConnection Connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "SELECT * FROM Countries WHERE CountryName = @CountryName";
+            SqlCommand Command = new SqlCommand(query, Connection);
+            Command.Parameters.AddWithValue("@CountryName", CountryName);
+
+            try
+            {
+                Connection.Open();
+                SqlDataReader reader = Command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    IsFound = true;
+
+                    CountryID = (int)reader["CountryID"];
+                }
+                else
+                    IsFound = false;
+
+                reader.Close();
+            }
+            catch
+            {
+                IsFound = false;
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+            return IsFound;
+        }
+
         public static DataTable GetAllCountries()
         {
             DataTable dt = new DataTable();

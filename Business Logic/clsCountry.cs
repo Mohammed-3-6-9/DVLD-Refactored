@@ -37,6 +37,18 @@ namespace Business_Logic
                 return null;
         }
 
+        public static clsCountry Find(string CountryName)
+        {
+            int ID = -1;
+
+            if (clsCountryData.GetCountryInfoByCountryName(CountryName, ref ID))
+            {
+                return new clsCountry(ID, CountryName);
+            }
+            else
+                return null;
+        }
+
         public static DataTable GetAllCountries()
         {
             return clsCountryData.GetAllCountries();
