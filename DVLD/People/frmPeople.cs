@@ -41,40 +41,40 @@ namespace DVLD
             if(dgvPeople.Rows.Count > 0)
             {
                 dgvPeople.Columns["PersonID"].HeaderText = "Person ID";
-                dgvPeople.Columns["PersonID"].Width = 110;
+                // dgvPeople.Columns["PersonID"].Width = 110;
 
                 dgvPeople.Columns["NationalNo"].HeaderText = "National No.";
-                dgvPeople.Columns["NationalNo"].Width = 120;
+                // dgvPeople.Columns["NationalNo"].Width = 120;
 
                 dgvPeople.Columns["FirstName"].HeaderText = "First Name";
-                dgvPeople.Columns["FirstName"].Width = 120;
+                // dgvPeople.Columns["FirstName"].Width = 120;
 
                 dgvPeople.Columns["SecondName"].HeaderText = "Second Name";
-                dgvPeople.Columns["SecondName"].Width = 140;
+                // dgvPeople.Columns["SecondName"].Width = 140;
 
                 dgvPeople.Columns["ThirdName"].HeaderText = "Third Name";
-                dgvPeople.Columns["ThirdName"].Width = 120;
+                // dgvPeople.Columns["ThirdName"].Width = 120;
 
                 dgvPeople.Columns["LastName"].HeaderText = "Last Name";
-                dgvPeople.Columns["LastName"].Width = 120;
+                // dgvPeople.Columns["LastName"].Width = 120;
 
                 dgvPeople.Columns["DateOfBirth"].HeaderText = "Date Of Birth";
-                dgvPeople.Columns["DateOfBirth"].Width = 140;
+                // dgvPeople.Columns["DateOfBirth"].Width = 140;
 
                 dgvPeople.Columns["NationalCountryID"].HeaderText = "Nationality";
-                dgvPeople.Columns["NationalCountryID"].Width = 120;
+                // dgvPeople.Columns["NationalCountryID"].Width = 120;
 
                 dgvPeople.Columns["Phone"].HeaderText = "Phone";
-                dgvPeople.Columns["Phone"].Width = 120;
+                // dgvPeople.Columns["Phone"].Width = 120;
 
                 dgvPeople.Columns["GendorName"].HeaderText = "Gendor Caption";
-                dgvPeople.Columns["GendorName"].Width = 120;
+                // dgvPeople.Columns["GendorName"].Width = 120;
 
                 dgvPeople.Columns["Email"].HeaderText = "Email";
-                dgvPeople.Columns["Email"].Width = 170;
+                // dgvPeople.Columns["Email"].Width = 170;
 
                 dgvPeople.Columns["Address"].HeaderText = "Address";
-                dgvPeople.Columns["Address"].Width = 140;
+                // dgvPeople.Columns["Address"].Width = 140;
             }
         }
 
@@ -136,7 +136,7 @@ namespace DVLD
                 return;
             }
 
-            if (FilterColumn == "PersonID")
+            if (FilterColumn == "PersonID" || FilterColumn == "NationalCountryID")
             {
                 _DataView.RowFilter = $"[{FilterColumn}] = {tbFilterValue.Text}";
             }
@@ -164,8 +164,16 @@ namespace DVLD
 
         private void tbFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cbFiltersType.Text == "Person ID")
-                e.Handled = (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar));
+            if (cbFiltersType.Text == "Person ID" || cbFiltersType.Text == "Nationality" || cbFiltersType.Text == "Phone")
+            {
+                if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+                {
+                    e.Handled = true;
+                    errpNumericFieldsValidation.SetError((TextBox)sender, "Invalid Insertion, Please Insert A Number");
+                }
+                else
+                    errpNumericFieldsValidation.SetError((TextBox)sender, "");
+            }
         }
 
         void DataUpdated()
