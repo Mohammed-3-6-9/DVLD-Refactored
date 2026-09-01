@@ -7,9 +7,11 @@ using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace DVLD
 {
@@ -29,8 +31,51 @@ namespace DVLD
             _DataView = dt.DefaultView;
             dgvPeople.DataSource = _DataView;
             dgvPeople.Columns["Gendor"].Visible = false;
+            PrepareColumnsView();
 
             lblRecordsNumber.Text = dgvPeople.RowCount.ToString();
+        }
+
+        private void PrepareColumnsView()
+        {
+            if(dgvPeople.Rows.Count > 0)
+            {
+                dgvPeople.Columns["PersonID"].HeaderText = "Person ID";
+                dgvPeople.Columns["PersonID"].Width = 110;
+
+                dgvPeople.Columns["NationalNo"].HeaderText = "National No.";
+                dgvPeople.Columns["NationalNo"].Width = 120;
+
+                dgvPeople.Columns["FirstName"].HeaderText = "First Name";
+                dgvPeople.Columns["FirstName"].Width = 120;
+
+                dgvPeople.Columns["SecondName"].HeaderText = "Second Name";
+                dgvPeople.Columns["SecondName"].Width = 140;
+
+                dgvPeople.Columns["ThirdName"].HeaderText = "Third Name";
+                dgvPeople.Columns["ThirdName"].Width = 120;
+
+                dgvPeople.Columns["LastName"].HeaderText = "Last Name";
+                dgvPeople.Columns["LastName"].Width = 120;
+
+                dgvPeople.Columns["DateOfBirth"].HeaderText = "Date Of Birth";
+                dgvPeople.Columns["DateOfBirth"].Width = 140;
+
+                dgvPeople.Columns["NationalCountryID"].HeaderText = "Nationality";
+                dgvPeople.Columns["NationalCountryID"].Width = 120;
+
+                dgvPeople.Columns["Phone"].HeaderText = "Phone";
+                dgvPeople.Columns["Phone"].Width = 120;
+
+                dgvPeople.Columns["GendorName"].HeaderText = "Gendor Caption";
+                dgvPeople.Columns["GendorName"].Width = 120;
+
+                dgvPeople.Columns["Email"].HeaderText = "Email";
+                dgvPeople.Columns["Email"].Width = 170;
+
+                dgvPeople.Columns["Address"].HeaderText = "Address";
+                dgvPeople.Columns["Address"].Width = 140;
+            }
         }
 
         private void People_Load(object sender, EventArgs e)
@@ -51,23 +96,54 @@ namespace DVLD
             frm.ShowDialog();
         }
 
+        private string MapFilterValue()
+        {
+            switch (cbFiltersType.Text)
+            {
+                case "Person ID":
+                    return "PersonID";
+                case "National No.":
+                    return "NationalNo";
+                case "First Name":
+                    return "FirstName";
+                case "Second Name":
+                    return "SecondName";
+                case "Third Name":
+                    return "ThirdName";
+                case "Last Name":
+                    return "LastName";
+                case "Nationality":
+                    return "NationalCountryID";
+                case "Gendor":
+                    return "GendorName";
+                case "Phone":
+                    return "Phone";
+                case "Email":
+                    return "Email";
+                default:
+                    return "None";
+            }
+        }
+
         private void tbFilterValue_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tbFilterValue.Text) || tbFilterValue.Text == "None")
+            string FilterColumn = MapFilterValue();
+
+            if (string.IsNullOrWhiteSpace(tbFilterValue.Text) || FilterColumn == "None")
             {
                 _DataView.RowFilter = null;
                 lblRecordsNumber.Text = dgvPeople.RowCount.ToString();
                 return;
             }
 
-            if (cbFiltersType.Text == "PersonID")
+            if (FilterColumn == "PersonID")
             {
-                _DataView.RowFilter = $"{cbFiltersType.Text} = {int.Parse(tbFilterValue.Text)}";
+                _DataView.RowFilter = $"[{FilterColumn}] = {tbFilterValue.Text}";
             }
             else
             {
                 string Filter = tbFilterValue.Text.Trim().Replace("'", "''");
-                _DataView.RowFilter = $"{cbFiltersType.Text} LIKE '%{Filter}%'";
+                _DataView.RowFilter = $"[{FilterColumn}] LIKE '{Filter}%'";
             }
 
             lblRecordsNumber.Text = dgvPeople.RowCount.ToString();
@@ -88,7 +164,7 @@ namespace DVLD
 
         private void tbFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cbFiltersType.Text == "PersonID")
+            if (cbFiltersType.Text == "Person ID")
                 e.Handled = (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar));
         }
 

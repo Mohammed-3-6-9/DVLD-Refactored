@@ -108,13 +108,14 @@
             this.cbFiltersType.FormattingEnabled = true;
             this.cbFiltersType.Items.AddRange(new object[] {
             "None",
-            "PersonID",
-            "NationalNo",
-            "FirstName",
-            "SecondName",
-            "ThirdName",
-            "LastName",
-            "GendorName",
+            "Person ID",
+            "National No.",
+            "First Name",
+            "Second Name",
+            "Third Name",
+            "Last Name",
+            "Nationality",
+            "Gendor",
             "Phone",
             "Email"});
             this.cbFiltersType.Location = new System.Drawing.Point(154, 278);
